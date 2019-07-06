@@ -1,0 +1,87 @@
+package com.csra.eligibility.workflow.medicalincome.rules;
+
+import com.csra.eligibility.domain.entity.member.Member;
+import com.csra.eligibility.domain.process.EligibilityMain;
+
+rule "FPL Level Determination Chip Low Income"	
+	ruleflow-group "eligibility_fpllevedetermination"
+	activation-group "eligibility_fpllevedetermination"
+	lock-on-active
+	//no-loop
+	when
+		$m : Member( incomeType == "CHIP" && houseHoldIncome < 15000 )
+		$eligibilityMain: EligibilityMain()
+	then
+		System.out.println("*b1 Fired Rule - " +  drools.getRule().getName());
+		System.out.println("** member: " + $m);
+		
+		$eligibilityMain.setFplComparedToMedicaidLevel(true);
+		System.out.println("** elig: " + $eligibilityMain);
+end
+
+rule "FPL Level Determination Chip Mid Income"	
+	ruleflow-group "eligibility_fpllevedetermination"
+	activation-group "eligibility_fpllevedetermination"
+	lock-on-active
+	//no-loop
+	when
+		$m : Member( incomeType == "CHIP" &&  houseHoldIncome >= 15000 )
+		$eligibilityMain: EligibilityMain()
+	then
+		System.out.println("*b2 Fired Rule - " +  drools.getRule().getName());
+		System.out.println("** member: " + $m);
+		
+		$eligibilityMain.setFplComparedToMedicaidLevel(false);
+		System.out.println("** elig: " + $eligibilityMain);
+end
+
+rule "FPL Level Determination Low Income Range 10000 and 15000"	
+	ruleflow-group "eligibility_fpllevedetermination"
+	activation-group "eligibility_fpllevedetermination"
+	lock-on-active
+	//no-loop
+	when
+		$m : Member( houseHoldIncome >= 5000 && houseHoldIncome < 15000  )
+		$eligibilityMain: EligibilityMain()
+	then
+		System.out.println("*b3 Fired Rule - " +  drools.getRule().getName());
+		System.out.println("** member: " + $m);
+
+		$eligibilityMain.setFplComparedToMedicaidLevel(true);
+		System.out.println("** elig: " + $eligibilityMain);
+end
+
+rule "FPL Level Determination Range 150000 and 25000"	
+	ruleflow-group "eligibility_fpllevedetermination"
+	activation-group "eligibility_fpllevedetermination"
+	lock-on-active
+	//no-loop
+	when
+		$m : Member( houseHoldIncome >= 15000 && houseHoldIncome <= 25000  )
+		$eligibilityMain: EligibilityMain()
+	then
+		System.out.println("*b4 Fired Rule - " +  drools.getRule().getName());
+		System.out.println("** member: " + $m);
+
+		$eligibilityMain.setFplComparedToMedicaidLevel(false);
+		System.out.println("** elig: " + $eligibilityMain);
+end
+
+
+rule "FPL Level Determination High Income"	
+	ruleflow-group "eligibility_fpllevedetermination"
+	activation-group "eligibility_fpllevedetermination"
+	lock-on-active
+	//no-loop
+	when
+		$m : Member( houseHoldIncome >= 25000  )
+		$eligibilityMain: EligibilityMain()
+	then
+		System.out.println("*b5 Fired Rule - " +  drools.getRule().getName());
+		System.out.println("** member: " + $m);
+
+		$eligibilityMain.setFplComparedToMedicaidLevel(false);
+		System.out.println("** elig: " + $eligibilityMain);
+end
+
+

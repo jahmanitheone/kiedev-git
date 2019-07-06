@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/bpmn20" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_tB8D8IhnEeeyaqiNdN4p8A" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" exporter="jBPM Designer" exporterVersion="6.2.0" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.omg.org/bpmn20" typeLanguage="http://www.java.com/javaTypes">
+  <bpmn2:itemDefinition id="_memberItem" structureRef="com.csra.eligibility.domain.entity.member.Member"/>
+  <bpmn2:itemDefinition id="_eligibilityMainItem" structureRef="com.csra.eligibility.domain.process.EligibilityMain"/>
+  <bpmn2:itemDefinition id="_eligibilityResultItem" structureRef="com.csra.eligibility.domain.rulefact.EligibilityResult"/>
+  <bpmn2:process id="MI_MainSub_DetermineAidCategory" drools:packageName="com.csra.eligibility.process.medicaidincome" drools:version="1.0" name="MI_MainSub_DetermineAidCategory" isExecutable="true">
+    <bpmn2:extensionElements>
+      <drools:import name="com.csra.eligibility.domain.entity.member.Member"/>
+      <drools:import name="com.csra.eligibility.domain.process.EligibilityMain"/>
+      <drools:import name="com.csra.eligibility.domain.rulefact.EligibilityResult"/>
+    </bpmn2:extensionElements>
+    <bpmn2:property id="member" itemSubjectRef="_memberItem"/>
+    <bpmn2:property id="eligibilityMain" itemSubjectRef="_eligibilityMainItem"/>
+    <bpmn2:property id="eligibilityResult" itemSubjectRef="_eligibilityResultItem"/>
+    <bpmn2:startEvent id="_4F3062A5-B9D3-4B89-9229-27CF9B6DB248" drools:selectable="true" color:background-color="#9acd32" color:border-color="#000000" color:color="#000000" name="Start" isInterrupting="false">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Start]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:outgoing>_327F0DBA-7659-412E-BAD5-7977BB557B55</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="_1ADD7851-92F4-4FA9-8887-46EA1C5E2316" drools:selectable="true" color:background-color="#ff6347" color:border-color="#000000" color:color="#000000" name="End">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[End]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>_67901133-9FA9-4697-8459-097CDD7425B7</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="_tB8D8YhnEeeyaqiNdN4p8A"/>
+    </bpmn2:endEvent>
+    <bpmn2:scriptTask id="_48FBCDBD-DAB0-49C7-965F-758DFF73D95C" drools:selectable="true" color:background-color="#fafad2" color:border-color="#000000" color:color="#000000" name="MI_MainSub_DetermineAidCategory" scriptFormat="http://www.java.com/java">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[MI_MainSub_DetermineAidCategory]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>_327F0DBA-7659-412E-BAD5-7977BB557B55</bpmn2:incoming>
+      <bpmn2:outgoing>_67901133-9FA9-4697-8459-097CDD7425B7</bpmn2:outgoing>
+      <bpmn2:script><![CDATA[System.out.println("");
+System.out.println("Process ("+kcontext.getProcessInstance().getProcessName() + ") Task: " + kcontext.getNodeInstance().getNodeName());
+
+EligibilityResult teligibilityResult = (EligibilityResult) eligibilityResult;
+if ( teligibilityResult != null ) {
+    String aidcode = " - Received Aid: BlueCross BlueShield";
+	teligibilityResult.setReason(teligibilityResult.getReason() +  aidcode );
+	
+	System.out.println("Set medical aid: " +  teligibilityResult.getReason() );
+}
+]]></bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="_327F0DBA-7659-412E-BAD5-7977BB557B55" drools:selectable="true" color:background-color="#000000" color:border-color="#000000" color:color="#000000" sourceRef="_4F3062A5-B9D3-4B89-9229-27CF9B6DB248" targetRef="_48FBCDBD-DAB0-49C7-965F-758DFF73D95C"/>
+    <bpmn2:sequenceFlow id="_67901133-9FA9-4697-8459-097CDD7425B7" drools:selectable="true" color:background-color="#000000" color:border-color="#000000" color:color="#000000" sourceRef="_48FBCDBD-DAB0-49C7-965F-758DFF73D95C" targetRef="_1ADD7851-92F4-4FA9-8887-46EA1C5E2316"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="_tB8rAIhnEeeyaqiNdN4p8A">
+    <bpmndi:BPMNPlane id="_tB8rAYhnEeeyaqiNdN4p8A" bpmnElement="MI_MainSub_DetermineAidCategory">
+      <bpmndi:BPMNShape id="_tB8rAohnEeeyaqiNdN4p8A" bpmnElement="_4F3062A5-B9D3-4B89-9229-27CF9B6DB248">
+        <dc:Bounds height="30.0" width="30.0" x="85.0" y="120.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_tB8rA4hnEeeyaqiNdN4p8A" bpmnElement="_1ADD7851-92F4-4FA9-8887-46EA1C5E2316">
+        <dc:Bounds height="28.0" width="28.0" x="362.0" y="126.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_tB8rBIhnEeeyaqiNdN4p8A" bpmnElement="_48FBCDBD-DAB0-49C7-965F-758DFF73D95C">
+        <dc:Bounds height="77.0" width="155.0" x="150.0" y="195.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="_tB8rBYhnEeeyaqiNdN4p8A" bpmnElement="_327F0DBA-7659-412E-BAD5-7977BB557B55" sourceElement="_tB8rAohnEeeyaqiNdN4p8A" targetElement="_tB8rBIhnEeeyaqiNdN4p8A">
+        <di:waypoint xsi:type="dc:Point" x="100.0" y="135.0"/>
+        <di:waypoint xsi:type="dc:Point" x="227.5" y="233.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_tB8rBohnEeeyaqiNdN4p8A" bpmnElement="_67901133-9FA9-4697-8459-097CDD7425B7" sourceElement="_tB8rBIhnEeeyaqiNdN4p8A" targetElement="_tB8rA4hnEeeyaqiNdN4p8A">
+        <di:waypoint xsi:type="dc:Point" x="227.5" y="233.5"/>
+        <di:waypoint xsi:type="dc:Point" x="376.0" y="140.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmn2:relationship id="_tB8rB4hnEeeyaqiNdN4p8A" type="BPSimData">
+    <bpmn2:extensionElements>
+      <bpsim:BPSimData>
+        <bpsim:Scenario xsi:type="bpsim:Scenario" id="default" name="Simulationscenario">
+          <bpsim:ScenarioParameters xsi:type="bpsim:ScenarioParameters" baseTimeUnit="min"/>
+          <bpsim:ElementParameters xsi:type="bpsim:ElementParameters" elementRef="_48FBCDBD-DAB0-49C7-965F-758DFF73D95C" id="_tB8rCIhnEeeyaqiNdN4p8A">
+            <bpsim:TimeParameters xsi:type="bpsim:TimeParameters">
+              <bpsim:ProcessingTime xsi:type="bpsim:Parameter">
+                <bpsim:UniformDistribution max="10.0" min="5.0"/>
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+            <bpsim:CostParameters xsi:type="bpsim:CostParameters">
+              <bpsim:UnitCost xsi:type="bpsim:Parameter">
+                <bpsim:FloatingParameter value="0.0"/>
+              </bpsim:UnitCost>
+            </bpsim:CostParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters xsi:type="bpsim:ElementParameters" elementRef="_4F3062A5-B9D3-4B89-9229-27CF9B6DB248" id="_tB8rCYhnEeeyaqiNdN4p8A">
+            <bpsim:TimeParameters xsi:type="bpsim:TimeParameters">
+              <bpsim:ProcessingTime xsi:type="bpsim:Parameter">
+                <bpsim:UniformDistribution max="10.0" min="5.0"/>
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+            <bpsim:ControlParameters xsi:type="bpsim:ControlParameters">
+              <bpsim:Probability xsi:type="bpsim:Parameter">
+                <bpsim:FloatingParameter value="100.0"/>
+              </bpsim:Probability>
+            </bpsim:ControlParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters xsi:type="bpsim:ElementParameters" elementRef="_327F0DBA-7659-412E-BAD5-7977BB557B55" id="_tB8rCohnEeeyaqiNdN4p8A">
+            <bpsim:ControlParameters xsi:type="bpsim:ControlParameters">
+              <bpsim:Probability xsi:type="bpsim:Parameter">
+                <bpsim:FloatingParameter value="100.0"/>
+              </bpsim:Probability>
+            </bpsim:ControlParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters xsi:type="bpsim:ElementParameters" elementRef="_67901133-9FA9-4697-8459-097CDD7425B7" id="_tB8rC4hnEeeyaqiNdN4p8A">
+            <bpsim:ControlParameters xsi:type="bpsim:ControlParameters">
+              <bpsim:Probability xsi:type="bpsim:Parameter">
+                <bpsim:FloatingParameter value="100.0"/>
+              </bpsim:Probability>
+            </bpsim:ControlParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters xsi:type="bpsim:ElementParameters" elementRef="_1ADD7851-92F4-4FA9-8887-46EA1C5E2316" id="_tB8rDIhnEeeyaqiNdN4p8A">
+            <bpsim:TimeParameters xsi:type="bpsim:TimeParameters">
+              <bpsim:ProcessingTime xsi:type="bpsim:Parameter">
+                <bpsim:UniformDistribution max="10.0" min="5.0"/>
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+        </bpsim:Scenario>
+      </bpsim:BPSimData>
+    </bpmn2:extensionElements>
+    <bpmn2:source>_tB8D8IhnEeeyaqiNdN4p8A</bpmn2:source>
+    <bpmn2:target>_tB8D8IhnEeeyaqiNdN4p8A</bpmn2:target>
+  </bpmn2:relationship>
+</bpmn2:definitions>

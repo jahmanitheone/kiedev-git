@@ -1,0 +1,25 @@
+package com.csra.eligibility.workflow.medicalincome.rules;
+
+import com.csra.eligibility.domain.entity.member.Member;
+import com.csra.eligibility.domain.rulefact.EligibilityResult;
+import java.util.Date;
+
+rule "HouseHold Income Over Limit"	
+	ruleflow-group "eligibility_prechecks"
+	activation-group "eligibility_prechecks"
+	no-loop
+	when
+		$m: Member(houseHoldIncome >= 50000)
+		$eliResult: EligibilityResult()
+	then
+		System.out.println("*d1 Fired Rule - " +  drools.getRule().getName());
+		System.out.println("*d1 Fired Rule - member: " +  $m);
+		
+			//Set result to - inEligible
+		$eliResult.setTouched(true);	
+		$eliResult.setEligibleStatus(false);	
+		$eliResult.setReason("HouseHold Income Over Limit");
+		
+		System.out.println("*Fired Rule STOP");
+end
+

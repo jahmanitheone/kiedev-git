@@ -1,0 +1,17 @@
+package com.csra.eligibility.workflow.medicalincome.rules;
+
+import com.csra.eligibility.domain.entity.member.Member;
+
+rule "Income Type Determination"	
+	ruleflow-group "eligibility_incometypedet"
+	activation-group "eligibility_incometypedet"
+	no-loop
+	when
+		$m: Member(newBorn == true)
+	then
+		System.out.println("*c1 Fired Rule - " +  drools.getRule().getName());
+		System.out.println("*Fired Rule - member: " +  $m);
+		
+		$m.setIncomeType("CHIP");
+end
+

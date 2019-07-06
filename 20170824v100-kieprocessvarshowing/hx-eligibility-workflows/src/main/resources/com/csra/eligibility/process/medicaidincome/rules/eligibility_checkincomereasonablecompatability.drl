@@ -1,0 +1,90 @@
+package com.csra.eligibility.workflow.medicalincome.rules;
+
+import com.csra.eligibility.domain.entity.member.Member;
+import com.csra.eligibility.domain.process.EligibilityMain;
+import com.csra.eligibility.domain.rulefact.EligibilityResult;
+
+rule "CheckIncome Reasonable Compatability NewBorn HighIncome"
+	ruleflow-group "eligibility_checkincomereasonablecompatability"
+	activation-group "eligibility_checkincomereasonablecompatability"
+	no-loop
+	when
+		$m: Member(newBorn == true && houseHoldIncome >= 15000)
+		$elig: EligibilityMain()
+		$eliResult: EligibilityResult()		
+	then
+		System.out.println("*a1 Fired Rule - " +  drools.getRule().getName());
+
+		$elig.setNonCapabitibleIndicator(false);
+		
+			//Set result to - inEligible
+		$eliResult.setTouched(true);	
+		$eliResult.setEligibleStatus(false);	
+		$eliResult.setReason("Newborn HouseHold Income Incompatability");
+		
+		System.out.println("*a1 Fired Rule - member: " +  $m);
+		System.out.println("*a1 Fired Rule - elig: " +  $elig);
+		System.out.println("*a1 Fired Rule - $eliResult: " +  $eliResult);
+end
+
+
+rule "CheckIncome Reasonable Compatability NewBorn LowIcome"
+	ruleflow-group "eligibility_checkincomereasonablecompatability"
+	activation-group "eligibility_checkincomereasonablecompatability"
+	no-loop
+	when
+		$m: Member(newBorn == true && houseHoldIncome < 15000)
+		$elig: EligibilityMain()
+		$eliResult: EligibilityResult()		
+	then
+		System.out.println("*a2 Fired Rule - " +  drools.getRule().getName());
+		
+		$elig.setNonCapabitibleIndicator(true);
+
+		System.out.println("*a2 Fired Rule - member: " +  $m);
+		System.out.println("*a2 Fired Rule - elig: " +  $elig);
+end
+
+
+rule "CheckIncome Reasonable Compatability AnyOne HighIncome"
+	ruleflow-group "eligibility_checkincomereasonablecompatability"
+	activation-group "eligibility_checkincomereasonablecompatability"
+	no-loop
+	when
+		$m: Member(houseHoldIncome >= 15000)
+		$elig: EligibilityMain()
+		$eliResult: EligibilityResult()		
+	then
+		System.out.println("*a3 Fired Rule - " +  drools.getRule().getName());
+
+		$elig.setNonCapabitibleIndicator(false);
+		
+			//Set result to - inEligible
+		$eliResult.setTouched(true);	
+		$eliResult.setEligibleStatus(false);	
+		$eliResult.setReason("HouseHold Income Incompatability");
+		
+		System.out.println("*a3 Fired Rule - member: " +  $m);
+		System.out.println("*a3 Fired Rule - elig: " +  $elig);
+		System.out.println("*a3 Fired Rule - $eliResult: " +  $eliResult);
+end
+
+
+rule "CheckIncome Reasonable Compatability AnyOne LowIcome"
+	ruleflow-group "eligibility_checkincomereasonablecompatability"
+	activation-group "eligibility_checkincomereasonablecompatability"
+	no-loop
+	when
+		$m: Member(houseHoldIncome < 15000)
+		$elig: EligibilityMain()
+		$eliResult: EligibilityResult()		
+	then
+		System.out.println("*a4 Fired Rule - " +  drools.getRule().getName());
+		
+		$elig.setNonCapabitibleIndicator(true);
+
+		System.out.println("*a4 Fired Rule - member: " +  $m);
+		System.out.println("*a4 Fired Rule - elig: " +  $elig);
+		System.out.println("*a4 Fired Rule - $eliResult: " +  $eliResult);
+end
+
